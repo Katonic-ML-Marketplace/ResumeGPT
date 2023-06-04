@@ -6,6 +6,8 @@ from PIL import Image
 import base64
 import io
 from streamlit_option_menu import option_menu
+import pandas as pd
+from io import BytesIO
 
 from OCR_Reader import CVsReader
 from ChatGPT_Pipeline import CVsInfoExtractor
@@ -116,7 +118,7 @@ if selected == "ResumeGPT":
 
                 # Assuming you have the extracted CV data in a Pandas DataFrame called extracted_data_df
                 # Convert the DataFrame to Excel format and store it in the resume_bytes variable
-                resume_bytes = extracted_data_df.to_excel(index=False, encoding="utf-8", engine="openpyxl")
+                #resume_bytes = extracted_data_df.to_excel(index=False, encoding="utf-8", engine="openpyxl")
 
         
 
@@ -149,13 +151,24 @@ if selected == "ResumeGPT":
                 except Exception as e:
                     st.write(e)
                 
+                excel_file = BytesIO()
+                with pd.ExcelWriter(excel_file, engine="xlsxwriter", mode="xlsx") as writer:
+                    extract_cv_info_dfs.to_excel(writer, index=False)
+                
+                excel_file.seek(0)
+                excel_bytes = excel_file.getvalue()
+                # excel_file = pd.ExcelWriter("resume.xlsx", engine="xlsxwriter").get_contents()
+                # excel_bytes = excel_file.getvalue()
+                # xlsx_extracted_content = extract_cv_info_dfs.to_excel(excel_file,index=False)
+                # xlsx_bytes = io.BytesIO(xlsx_extracted_content.encode())
+
                 try:
                     with col3:
                         btn = ste.download_button(
                             label="Download Extracted_CV.xlsx",
-                            data=resume_bytes,
+                            data=excel_bytes,
                             file_name="resume.xlsx",
-                            mime="application/xlsx",
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         )
                 except Exception as e:
                     st.write(e)
