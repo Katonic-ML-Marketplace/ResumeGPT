@@ -91,7 +91,6 @@ if st.button("Extract Resume"):
 
             cvs_content_df = cvs_reader.read_cv()
 
-
             cvs_info_extractor = CVsInfoExtractor(cvs_df = cvs_content_df, openai_api_key = openai_api_key_arg, desired_positions = desired_positions)
             st.write("It takes as an argument the dataframe returned by the read_cv method of the CVsReader instance and the desired positions in a list.")
             st.write(cvs_info_extractor)
