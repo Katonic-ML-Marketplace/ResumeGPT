@@ -24,7 +24,7 @@ st.set_page_config(
 with st.sidebar:
         selected = option_menu(
             menu_title = "Main Menu",
-            options = ["ResumeGPT","FAQ","About the App"])
+            options = ["About the App","ResumeGPT","FAQ"])
 
 if selected == "ResumeGPT":
     st.markdown(
@@ -77,62 +77,29 @@ if selected == "ResumeGPT":
             href = f'<a href="data:application/pdf;base64,{b64}" download="Software-Engineer.pdf">Download Sample PDF</a>'
             st.markdown(href, unsafe_allow_html=True)
 
-<<<<<<< HEAD
     download_sample_pdf()
     uploaded_file = st.file_uploader('Choose single or multiple .pdf files', type="pdf",accept_multiple_files=True)
     for i in uploaded_file:
         with open(os.path.join("../CVs",i.name),"wb") as f:
             f.write(i.getbuffer())
+
+   
+
     
 
     desired_positions_arg = st.text_input(
         "Enter the desired_position for which you're extracting your resume e.g. Software Engineer, Data Scientist, Data Analyst, Data Engineer"
     )
-=======
-def download_sample_pdf():
-    with open("../sample_cvs/Software-Engineer.pdf", "rb") as file:
-        contents = file.read()
-        b64 = base64.b64encode(contents).decode()
-        href = f'<a href="data:application/pdf;base64,{b64}" download="Software-Engineer.pdf">Download Sample PDF</a>'
-        st.markdown(href, unsafe_allow_html=True)
-
-download_sample_pdf()
-uploaded_file = st.file_uploader('Choose single or multiple .pdf files', type="pdf",accept_multiple_files=True)
-for i in uploaded_file:
-    with open(os.path.join("../CVs",i.name),"wb") as f:
-        f.write(i.getbuffer())
-
-desired_positions_arg = st.text_input(
-    "Enter the desired_position for which you're extracting your resume e.g. Software Engineer, Data Scientist, Data Analyst, Data Engineer"
-)
-
-if st.button("Extract Resume"):
-    try:
-        with st.spinner("Processing... This may take a while⏳"):
-            st.write("fetching required files")
-
-            desired_positions = [position.strip() for position in desired_positions_arg.split(",")]
-            #st.write("Splitting the desired positions into a list and removing any leading or trailing whitespace")
-            st.write(desired_positions)
-
-            cvs_reader = CVsReader(cvs_directory_path = cvs_directory_path_arg)
-
-            cvs_content_df = cvs_reader.read_cv()
-
-            cvs_info_extractor = CVsInfoExtractor(cvs_df = cvs_content_df, openai_api_key = openai_api_key_arg, desired_positions = desired_positions)
-            st.write("It takes as an argument the dataframe returned by the read_cv method of the CVsReader instance and the desired positions in a list.")
-            st.write(cvs_info_extractor)
-            st.write("---")
->>>>>>> b2045795cbe5b518e67cdeb4cd77f4985f4a2cf1
 
     if st.button("Extract Resume"):
         try:
             with st.spinner("Processing... This may take a while⏳"):
-                st.write("fetching required files")
+                #st.write("fetching required files")
+
 
                 desired_positions = [position.strip() for position in desired_positions_arg.split(",")]
                 #st.write("Splitting the desired positions into a list and removing any leading or trailing whitespace")
-                st.write(desired_positions)
+                #st.write(desired_positions)
 
                 cvs_reader = CVsReader(cvs_directory_path = cvs_directory_path_arg)
 
@@ -146,6 +113,11 @@ if st.button("Extract Resume"):
 
                 extract_cv_info_dfs = cvs_info_extractor.extract_cv_info()
                 st.write("This method presumably returns a list of dataframes, each dataframe corresponding to the extracted information from each CV.")
+
+                # Assuming you have the extracted CV data in a Pandas DataFrame called extracted_data_df
+                # Convert the DataFrame to Excel format and store it in the resume_bytes variable
+                resume_bytes = extracted_data_df.to_excel(index=False, encoding="utf-8", engine="openpyxl")
+
         
 
                 col1, col2, col3 = st.columns(3)
@@ -177,16 +149,16 @@ if st.button("Extract Resume"):
                 except Exception as e:
                     st.write(e)
                 
-                # try:
-                #     with col3:
-                #         btn = ste.download_button(
-                #             label="Download Extracted_CV.xlsx",
-                #             data=resume_bytes,
-                #             file_name="resume.xlsx",
-                #             mime="application/xlsx",
-                #         )
-                # except Exception as e:
-                #     st.write(e)
+                try:
+                    with col3:
+                        btn = ste.download_button(
+                            label="Download Extracted_CV.xlsx",
+                            data=resume_bytes,
+                            file_name="resume.xlsx",
+                            mime="application/xlsx",
+                        )
+                except Exception as e:
+                    st.write(e)
 
         except OpenAIError as e:
             st.error(e._message) 
@@ -203,3 +175,22 @@ if selected == "About the App":
     st.markdown("3. **Make informed hiring decisions:** ResumeGPT provides a comprehensive overview of each candidate, enabling hiring managers to make informed decisions. By having access to key information, such as skills and experience, hiring managers can select the best candidate for the job.")
     
     st.markdown("By leveraging the capabilities of ResumeGPT, hiring managers can streamline the candidate evaluation process and make more effective hiring decisions.")
+
+if selected == "FAQ":
+    faq_data = {
+    "How does ResumeGPT extract information from CVs and resumes?": "ResumeGPT utilizes natural language processing techniques to analyze the text and extract key details such as skills, experience, and education.",
+    "Can ResumeGPT handle different file formats for CVs and resumes?": "ResumeGPT only supports pdf format.",
+    "What information does ResumeGPT organize and present for each candidate?": "ResumeGPT organizes candidate data in a structured format, including skills, experience, and education. It provides a comprehensive overview of each candidate's qualifications.",
+    "How does ResumeGPT help in comparing candidates?": "ResumeGPT allows hiring managers to compare candidates based on their skills, experience, and education. It provides a side-by-side evaluation of candidates, making it easier to assess their suitability for the job.",
+    "Can ResumeGPT handle multiple CVs and resumes at once?": "Yes, ResumeGPT supports processing multiple CVs and resumes simultaneously. It can efficiently handle a large number of documents to streamline the hiring process.",
+    "Is ResumeGPT customizable to match specific job requirements?": "Yes, ResumeGPT can be configured to extract and prioritize specific skills, qualifications, or keywords based on the job requirements. This customization helps tailor the evaluation process to the specific needs of the hiring team.",
+    "How accurate is ResumeGPT in extracting and organizing information?": "ResumeGPT utilizes advanced language models and natural language processing techniques to achieve high accuracy in extracting and organizing information. However, it's important to review and validate the extracted data to ensure its accuracy.",
+    "Is the data processed by ResumeGPT secure and confidential?":"Yes, ResumeGPT takes data security and confidentiality seriously. All CVs and resumes processed by the app are treated with strict confidentiality and are not shared with any third parties."
+    }
+    # Display the FAQ section
+    st.subheader("Frequently Asked Questions")
+
+    # Iterate over the FAQ data and create expandable sections
+    for question, answer in faq_data.items():
+        with st.expander(question):
+            st.write(answer)
