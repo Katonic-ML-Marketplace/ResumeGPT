@@ -77,6 +77,7 @@ if selected == "ResumeGPT":
             href = f'<a href="data:application/pdf;base64,{b64}" download="Software-Engineer.pdf">Download Sample PDF</a>'
             st.markdown(href, unsafe_allow_html=True)
 
+<<<<<<< HEAD
     download_sample_pdf()
     uploaded_file = st.file_uploader('Choose single or multiple .pdf files', type="pdf",accept_multiple_files=True)
     for i in uploaded_file:
@@ -87,6 +88,42 @@ if selected == "ResumeGPT":
     desired_positions_arg = st.text_input(
         "Enter the desired_position for which you're extracting your resume e.g. Software Engineer, Data Scientist, Data Analyst, Data Engineer"
     )
+=======
+def download_sample_pdf():
+    with open("../sample_cvs/Software-Engineer.pdf", "rb") as file:
+        contents = file.read()
+        b64 = base64.b64encode(contents).decode()
+        href = f'<a href="data:application/pdf;base64,{b64}" download="Software-Engineer.pdf">Download Sample PDF</a>'
+        st.markdown(href, unsafe_allow_html=True)
+
+download_sample_pdf()
+uploaded_file = st.file_uploader('Choose single or multiple .pdf files', type="pdf",accept_multiple_files=True)
+for i in uploaded_file:
+    with open(os.path.join("../CVs",i.name),"wb") as f:
+        f.write(i.getbuffer())
+
+desired_positions_arg = st.text_input(
+    "Enter the desired_position for which you're extracting your resume e.g. Software Engineer, Data Scientist, Data Analyst, Data Engineer"
+)
+
+if st.button("Extract Resume"):
+    try:
+        with st.spinner("Processing... This may take a while⏳"):
+            st.write("fetching required files")
+
+            desired_positions = [position.strip() for position in desired_positions_arg.split(",")]
+            #st.write("Splitting the desired positions into a list and removing any leading or trailing whitespace")
+            st.write(desired_positions)
+
+            cvs_reader = CVsReader(cvs_directory_path = cvs_directory_path_arg)
+
+            cvs_content_df = cvs_reader.read_cv()
+
+            cvs_info_extractor = CVsInfoExtractor(cvs_df = cvs_content_df, openai_api_key = openai_api_key_arg, desired_positions = desired_positions)
+            st.write("It takes as an argument the dataframe returned by the read_cv method of the CVsReader instance and the desired positions in a list.")
+            st.write(cvs_info_extractor)
+            st.write("---")
+>>>>>>> b2045795cbe5b518e67cdeb4cd77f4985f4a2cf1
 
     if st.button("Extract Resume"):
         try:
