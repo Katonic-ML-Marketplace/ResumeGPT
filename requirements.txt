@@ -27,3 +27,4 @@ streamlit==1.23.1
 hydralit_components==1.0.10
 streamlit-ext==0.1.7
 stqdm==0.0.5
+streamlit_option_menu==0.3.2
