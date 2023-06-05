@@ -109,12 +109,12 @@ if selected == "ResumeGPT":
 
 
                 cvs_info_extractor = CVsInfoExtractor(cvs_df = cvs_content_df, openai_api_key = openai_api_key_arg, desired_positions = desired_positions)
-                st.write("It takes as an argument the dataframe returned by the read_cv method of the CVsReader instance and the desired positions in a list.")
-                st.write(cvs_info_extractor)
-                st.write("---")
+                #st.write("It takes as an argument the dataframe returned by the read_cv method of the CVsReader instance and the desired positions in a list.")
+                #st.write(cvs_info_extractor)
+                #st.write("---")
 
                 extract_cv_info_dfs = cvs_info_extractor.extract_cv_info()
-                st.write("This method presumably returns a list of dataframes, each dataframe corresponding to the extracted information from each CV.")
+                #st.write("This method presumably returns a list of dataframes, each dataframe corresponding to the extracted information from each CV.")
 
                 # Assuming you have the extracted CV data in a Pandas DataFrame called extracted_data_df
                 # Convert the DataFrame to Excel format and store it in the resume_bytes variable
