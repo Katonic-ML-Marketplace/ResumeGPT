@@ -23,10 +23,13 @@ st.set_page_config(
     initial_sidebar_state = 'auto'
 )
 
+
 with st.sidebar:
         selected = option_menu(
             menu_title = "Main Menu",
             options = ["About the App","ResumeGPT","FAQ"])
+          
+
 
 if selected == "ResumeGPT":
     st.markdown(
@@ -90,7 +93,7 @@ if selected == "ResumeGPT":
     
 
     desired_positions_arg = st.text_input(
-        "Enter the desired_position for which you're extracting your resume e.g. Software Engineer, Data Scientist, Data Analyst, Data Engineer"
+        "Enter the desired_position for which you're extracting your resume e.g. Software Engineer, Data Scientist, Data Analyst, Data Engineer, DevOps Engineer"
     )
 
     if st.button("Extract Resume"):

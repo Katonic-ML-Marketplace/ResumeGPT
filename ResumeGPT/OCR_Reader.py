@@ -47,7 +47,7 @@ class CVsReader:
 
     # Method to extract text from a PDF file
     def _extract_text_from_pdf(self, pdf_path):
-
+        
         # Print the name of the file being processed
         print(f"Extracting text from file: {pdf_path}")
 
